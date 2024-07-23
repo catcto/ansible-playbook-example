@@ -1,0 +1,55 @@
+- name: Deploy Proxy
+  hosts: all
+  become: yes
+  tasks:
+    - name: Docker compose login
+      ansible.builtin.shell:
+        cmd: docker login -u "{{ lookup('env', 'DOCKER_USERNAME') }}" -p "{{ lookup('env', 'DOCKER_PASSWORD') }}" "{{ lookup('env', 'DOCKER_REGISTRY') }}"
+      args:
+        executable: /bin/bash
+        chdir: "~"
+
+    - name: Docker compose file copy to temp
+      ansible.builtin.copy:
+        src: "../docker-compose/{{ docker_compose }}"
+        dest: ~/temp/
+        directory_mode: 0755
+        mode: 0644
+
+    - name: Docker compose pull in temp
+      ansible.builtin.shell:
+        cmd: docker compose pull
+      args:
+        executable: /bin/bash
+        chdir: "~/temp/{{ docker_compose }}"
+
+    - name: Docker compose file exists in the apps directory
+      ansible.builtin.stat:
+        path: "~/apps/{{ docker_compose }}"
+      register: result_directory
+
+    - name: Docker compose stop and up by dir exists
+      ansible.builtin.shell: |
+        cd ~/apps/{{ docker_compose }}
+        docker compose stop {{ docker_service }}
+        docker compose rm -f {{ docker_service }}
+        rm -rf ~/apps/{{ docker_compose }}
+        mv ~/temp/{{ docker_compose }} ~/apps/
+        cd ~/apps/{{ docker_compose }}
+        docker compose up -d {{ docker_service }}
+      args:
+        executable: /bin/bash
+        chdir: "~"
+      when:
+        - result_directory.stat.exists
+
+    - name:  Docker compose stop and up by dir no exists
+      ansible.builtin.shell: |
+        mv ~/temp/{{ docker_compose }} ~/apps/
+        cd ~/apps/{{ docker_compose }}
+        docker compose up -d {{ docker_service }}
+      args:
+        executable: /bin/bash
+        chdir: "~"
+      when:
+        - result_directory.stat.exists == false

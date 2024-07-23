@@ -1,0 +1,14 @@
+- name: test
+  hosts: all
+  become: yes
+  tasks:
+    - name: Ping hosts
+      ping:
+  
+    - name: Print real host name
+      debug:
+        msg: "The real host name is {{ ansible_hostname }}"
+    
+    - name: Print PATH environment variable
+      debug:
+        msg: "The PATH is {{ ansible_env.PATH }}"
