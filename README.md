@@ -10,10 +10,7 @@ Use Ansible to manage servers, including server initialization, software install
 2. Install `Docker`. Refer to the [Docker Installation](https://notes.xiaowu.ai/%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%90%E7%BB%B4/Docker).
 3. Install `Ansible`. Refer to the [Ansible Installation](https://notes.xiaowu.ai/%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%90%E7%BB%B4/Ansible).
 4. Install `Zsh` and `Oh My Zsh`. Refer to the [Zsh Installation](https://notes.xiaowu.ai/%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%BF%90%E7%BB%B4/Shell#Zsh).
-5. Create directories for applications, data, and temporary files:
-   ```shell
-   $ mkdir ~/apps ~/data ~/temp
-   ```
+5. Modify and add new servers to the `inventory.ini` file.
 
 ### Local
 
