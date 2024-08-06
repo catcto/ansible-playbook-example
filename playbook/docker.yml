@@ -7,7 +7,7 @@
   tasks:
     - name: Docker compose login
       ansible.builtin.shell:
-        cmd: docker login -u "{{ lookup('env', 'KAAYUN_DOCKER_USERNAME') }}" -p "{{ lookup('env', 'KAAYUN_DOCKER_PASSWORD') }}" "{{ lookup('env', 'KAAYUN_DOCKER_REGISTRY') }}"
+        cmd: docker login -u "{{ lookup('env', 'DOCKER_USERNAME') }}" -p "{{ lookup('env', 'DOCKER_PASSWORD') }}" "{{ lookup('env', 'DOCKER_REGISTRY') }}"
       args:
         executable: /bin/bash
         chdir: "~"
