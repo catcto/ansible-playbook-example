@@ -24,7 +24,7 @@ For MacOS, use `brew install ansible` for installation. Alternatively, you can u
 ### Run Docker Compose
 
 ```shell
-ansible-playbook -i inventory.ini playbook/docker.yml -e "docker_compose=test" -l "my-server-1,my-server-2"
-ansible-playbook -i inventory.ini playbook/docker.yml -e "docker_compose=test docker_service=redis" -l "my-server-1"
-ansible-playbook -i inventory.ini playbook/docker.yml -e "docker_compose=test docker_command='--file docker-compose.dev.yaml'" -l "my-server-2"
+$ ansible-playbook -i inventory.ini playbook/docker.yml -e "docker_compose=test" -l "my-server-1,my-server-2"
+$ ansible-playbook -i inventory.ini playbook/docker.yml -e "docker_compose=test docker_service=redis" -l "my-server-1"
+$ ansible-playbook -i inventory.ini playbook/docker.yml -e "docker_compose=test docker_command='--file docker-compose.dev.yaml'" -l "my-server-2"
 ```
