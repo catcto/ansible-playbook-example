@@ -1,0 +1,20 @@
+services:
+  redis:
+    image: redis:7.2.5
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass 123456
+
+  ansible-devops:
+    image: catcto/ansible-devops:latest
+    container_name: ansible-devops
+    hostname: ansible-devops
+    restart: always
+    tty: true
+    volumes:
+      - /etc/hosts:/etc/hosts:ro
+      - ${HOME}/.ssh:/root/.ssh:ro
+      - ${HOME}/.bash_profile:/root/.bash_profile:ro
+    working_dir: /root/my-ansible

@@ -1,10 +1,13 @@
 - name: Deploy Proxy
   hosts: all
   become: yes
+  vars:
+    docker_service: ""
+    docker_command: ""
   tasks:
     - name: Docker compose login
       ansible.builtin.shell:
-        cmd: docker login -u "{{ lookup('env', 'DOCKER_USERNAME') }}" -p "{{ lookup('env', 'DOCKER_PASSWORD') }}" "{{ lookup('env', 'DOCKER_REGISTRY') }}"
+        cmd: docker login -u "{{ lookup('env', 'KAAYUN_DOCKER_USERNAME') }}" -p "{{ lookup('env', 'KAAYUN_DOCKER_PASSWORD') }}" "{{ lookup('env', 'KAAYUN_DOCKER_REGISTRY') }}"
       args:
         executable: /bin/bash
         chdir: "~"
@@ -18,7 +21,7 @@
 
     - name: Docker compose pull in temp
       ansible.builtin.shell:
-        cmd: docker compose pull
+        cmd: docker compose {{docker_command}} pull
       args:
         executable: /bin/bash
         chdir: "~/temp/{{ docker_compose }}"
@@ -31,12 +34,12 @@
     - name: Docker compose stop and up by dir exists
       ansible.builtin.shell: |
         cd ~/apps/{{ docker_compose }}
-        docker compose stop {{ docker_service }}
-        docker compose rm -f {{ docker_service }}
+        docker compose {{docker_command}} stop {{ docker_service }}
+        docker compose {{docker_command}} rm -f {{ docker_service }}
         rm -rf ~/apps/{{ docker_compose }}
         mv ~/temp/{{ docker_compose }} ~/apps/
         cd ~/apps/{{ docker_compose }}
-        docker compose up -d {{ docker_service }}
+        docker compose {{docker_command}} up -d {{ docker_service }}
       args:
         executable: /bin/bash
         chdir: "~"
@@ -47,7 +50,7 @@
       ansible.builtin.shell: |
         mv ~/temp/{{ docker_compose }} ~/apps/
         cd ~/apps/{{ docker_compose }}
-        docker compose up -d {{ docker_service }}
+        docker compose {{docker_command}} up -d {{ docker_service }}
       args:
         executable: /bin/bash
         chdir: "~"
